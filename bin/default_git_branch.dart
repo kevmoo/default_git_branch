@@ -22,7 +22,7 @@ Future<String> defaultBranch() async {
   GitDir dir;
   try {
     dir = await GitDir.fromExisting(p.current, allowSubdirectory: true);
-  } on ProcessException catch (e) {
+  } on ProcessException {
     throw UserException("We don't appear to be within a Git directory.");
   }
 
