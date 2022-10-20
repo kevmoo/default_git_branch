@@ -4,7 +4,7 @@ description: A simple command-line application.
 # homepage: https://www.example.com
 
 environment:
-  sdk: '>=2.10.0 <3.0.0'
+  sdk: '>=2.18.0 <3.0.0'
 
 dependencies:
   git: ^2.0.0
@@ -12,7 +12,7 @@ dependencies:
   io: ^1.0.0
 
 dev_dependencies:
-  pedantic: ^1.9.0
+  lints: ^2.0.0
 
 executables:
   default_git_branch:

@@ -35,14 +35,13 @@ Future<String> defaultBranch() async {
 
   assert(result.exitCode == 0);
 
-  final outputs = LineSplitter.split(result.stdout as String)
-      .map((e) => _Output.parse(e))
-      .toList();
+  final outputs =
+      LineSplitter.split(result.stdout as String).map(_Output.parse).toList();
 
-  final remoteHead = outputs.singleWhere(
-    (element) => element.refname == 'refs/remotes/origin/HEAD',
-    orElse: () => null,
-  );
+  final remoteHead = outputs.cast<_Output?>().singleWhere(
+        (element) => element!.refname == 'refs/remotes/origin/HEAD',
+        orElse: () => null,
+      );
 
   if (remoteHead == null) {
     throw UserException('Could not find a remote HEAD.');
