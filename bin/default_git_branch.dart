@@ -10,7 +10,7 @@ Future<void> main() async {
   try {
     print(await defaultBranch());
   } on UserException catch (e) {
-    print(red.wrap(e.message));
+    stderr.writeln(red.wrap(e.message));
     exitCode = ExitCode.config.code;
   }
 }
@@ -59,7 +59,10 @@ Future<String> defaultBranch() async {
     throw UserException('Could not find a matching local branch.');
   }
   if (likelyDefaultBranches.length > 1) {
-    throw UserException('Found too many matching local branches.');
+    throw UserException(
+      'Found too many matching local branches '
+      '(${likelyDefaultBranches.map((e) => "'$e'").join(', ')}).',
+    );
   }
 
   final likelyDefaultBranch = likelyDefaultBranches.single;
@@ -87,7 +90,16 @@ class _Output {
   }
 
   @override
-  String toString() => [refname, upstream, push, symref].join(',');
+  String toString() => [
+        'refname:',
+        refname,
+        ',\tupstream:',
+        upstream,
+        ',\tpush:',
+        push,
+        ',\tsymref:',
+        symref,
+      ].join('');
 }
 
 class UserException implements Exception {
