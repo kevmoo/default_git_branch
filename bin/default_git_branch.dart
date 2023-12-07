@@ -15,6 +15,10 @@ Future<void> main() async {
   }
 }
 
+const _upstreams = {'origin', 'upstream'};
+
+Iterable<String> get _refs => _upstreams.map((e) => 'refs/remotes/$e/HEAD');
+
 /// Returns the name of the current default branch – if possible.
 ///
 /// Otherwise, throws a [UserException].
@@ -39,7 +43,7 @@ Future<String> defaultBranch() async {
       LineSplitter.split(result.stdout as String).map(_Output.parse).toList();
 
   final remoteHead = outputs.cast<_Output?>().singleWhere(
-        (element) => element!.refname == 'refs/remotes/origin/HEAD',
+        (element) => _refs.contains(element!.refname),
         orElse: () => null,
       );
 

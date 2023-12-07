@@ -4,15 +4,15 @@ description: A simple command-line application.
 # homepage: https://www.example.com
 
 environment:
-  sdk: '>=2.18.0 <3.0.0'
+  sdk: ^3.0.0
 
 dependencies:
   git: ^2.0.0
-  path: ^1.7.0
   io: ^1.0.0
+  path: ^1.7.0
 
 dev_dependencies:
-  lints: ^2.0.0
+  dart_flutter_team_lints: ^2.0.0
 
 executables:
   default_git_branch:
