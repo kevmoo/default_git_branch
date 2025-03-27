@@ -42,13 +42,19 @@ Future<String> defaultBranch() async {
   final outputs =
       LineSplitter.split(result.stdout as String).map(_Output.parse).toList();
 
-  final remoteHead = outputs.cast<_Output?>().singleWhere(
-        (element) => _refs.contains(element!.refname),
-        orElse: () => null,
-      );
+  final remoteHeads = outputs.where(
+    (element) => _refs.contains(element.refname),
+  );
 
-  if (remoteHead == null) {
+  late final _Output remoteHead;
+  if (remoteHeads.isEmpty) {
     throw UserException('Could not find a remote HEAD.');
+  } else if (remoteHeads.length > 1) {
+    throw StateError('''
+Too many remote heads!
+${remoteHeads.join('\n')}''');
+  } else {
+    remoteHead = remoteHeads.single;
   }
 
   final likelyDefaultBranches = outputs
@@ -60,6 +66,9 @@ Future<String> defaultBranch() async {
       .toList();
 
   if (likelyDefaultBranches.isEmpty) {
+    stderr.write('''
+ Could not find a ${remoteHead.symref}
+''');
     throw UserException('Could not find a matching local branch.');
   }
   if (likelyDefaultBranches.length > 1) {
